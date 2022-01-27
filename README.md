@@ -44,7 +44,7 @@ mysql -u root -p mydb < full_backup.sql
 ```
 
 ### Incremental backup
-In order to take an incremental backup. You will need to flush the binary log again and save binary logs created from the last full backup.
+In order to take incremental backup you will need periodically to flush the binary log again and save binary logs created from the last full backup.
 ```shell
 docker exec -it mysql_db mysqladmin -uroot -p flush-logs
 docker exec -it mysql_db ls -l /var/log/mysql/
@@ -65,6 +65,9 @@ Rollback looks like this:
 drop database mydb;
 create database mydb;
 mysql -u root -p mydb < full_backup.sql
-mysqlbinlog /var/log/mysql/mysql-bin.000004 | mysql -uroot -p mydb
 mysqlbinlog /var/log/mysql/mysql-bin.000005 | mysql -uroot -p mydb
 ```
+
+### Continuous Data Protection
+As example we can use master-slave replication and create new database from the slave
+https://github.com/tochytskyi/mysql-cluster 
